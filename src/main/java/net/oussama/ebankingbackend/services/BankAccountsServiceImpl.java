@@ -6,19 +6,20 @@ import lombok.extern.slf4j.Slf4j;
 import net.oussama.ebankingbackend.Execption.BalanceSoldeinsuffisantExecption;
 import net.oussama.ebankingbackend.Execption.BankAccountNotfoundExecption;
 import net.oussama.ebankingbackend.Execption.CustomerNotFondExecption;
+import net.oussama.ebankingbackend.dtos.CustomerDto;
 import net.oussama.ebankingbackend.entites.*;
 import net.oussama.ebankingbackend.enums.OperationType;
+import net.oussama.ebankingbackend.mappers.BankAccountMapperImpl;
 import net.oussama.ebankingbackend.repositroy.BankAccountOperationRepositroy;
 import net.oussama.ebankingbackend.repositroy.BankAccountRepositroy;
 import net.oussama.ebankingbackend.repositroy.CustomersRepositroy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,6 +30,7 @@ public class BankAccountsServiceImpl implements BanKAccountServices{
     private CustomersRepositroy customersRepositroy;
     private BankAccountRepositroy bankAccountRepositroy;
     private BankAccountOperationRepositroy bankAccountOperationRepositro;
+    private BankAccountMapperImpl datoMapper;
     @Override
     public Customer saveCustomer(Customer customer) {
         log.info("Saving customer");
@@ -62,10 +64,15 @@ public class BankAccountsServiceImpl implements BanKAccountServices{
         savingAccount.setCustomer(customer);
         return ((SavingAccount)bankAccountRepositroy.save(savingAccount));
     }
-
+    //la defference entre toList et Collect.tolist si le 1 cree une list
+    //no modifable et la 2 si de cree une liste modfiable
     @Override
-    public List<Customer> listCustomers() {
-        return customersRepositroy.findAll();
+    public List<CustomerDto> listCustomers() {
+        List<Customer> customers= customersRepositroy.findAll();
+        List<CustomerDto>customerDtos=customers.stream().map(
+                customer -> datoMapper.fromCustomer(customer)
+        ).collect(Collectors.toList());
+        return customerDtos;
     }
 
     @Override
@@ -108,5 +115,9 @@ public class BankAccountsServiceImpl implements BanKAccountServices{
     public void virementAccount(String acountIdSource, String accountIddestination, double amount) throws BankAccountNotfoundExecption {
        debitAccount(acountIdSource,amount,"transfere");
        creditAccount(acountIdSource,amount,"transfere");
+    }
+     @Override
+    public List<BankAccount> bankAccountslist(){
+        return bankAccountRepositroy.findAll();
     }
 }
