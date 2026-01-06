@@ -12,6 +12,9 @@ public interface BanKAccountServices {
     SavingBankAccountDTO saveBankSavingAccount(double SoldeIntial, double interestRate, Long CustomerId) throws CustomerNotFondExecption;
 
     List<CustomerDto> listCustomers();
+
+    int CountCustomers();
+
     BankAccountDto getBankAccount(String Id) throws BankAccountNotfoundExecption;
     void debitAccount(String acountId,double amount,String description) throws BankAccountNotfoundExecption;
     void creditAccount(String acountId,double amount,String description) throws BankAccountNotfoundExecption;
@@ -29,4 +32,10 @@ public interface BanKAccountServices {
     AccountHistroyDto historyaccount(String id, int page, int size) throws BankAccountNotfoundExecption;
 
     List<CustomerDto> search(String keyword);
+
+    int countBankAccount();
+
+    double countamoutAccount();
+
+    int accountOperations();
 }

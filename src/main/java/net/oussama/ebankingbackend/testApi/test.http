@@ -1,7 +1,13 @@
 GET http://localhost:8089/customers
-Authorization: Basic dXNlcjI6MTIzNDU=
+Authorization: Basic eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMiIsImV4cCI6MTc2NzY2MTIwNSwiaWF0IjoxNzY3NjYwNjA1LCJzY29wZSI6IkFETUlOIFVTRVIgRkFDVE9SX1BBU1NXT1JEIn0.6KdWIyvpRztCF_EDZ7wRxbcAu996GjMAP69Q65dDDOn9OiHxqT7z5KHXcLhLvBqiFlZDVT5faoHbe-far2MtvQ
 Accept: application/json
 
 ###
 GET http://localhost:8089/auth/usres
-Authorization: Basic dXNlcjI6MTIzNDU=
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMiIsImV4cCI6MTc2NzY2MTQyMSwiaWF0IjoxNzY3NjYwODIxLCJzY29wZSI6IkFETUlOIFVTRVIgRkFDVE9SX1BBU1NXT1JEIn0.2JwP9RBHjOrQIS93SYt5zvwgwHisDRufbuVUCcU2XGPNwdWpzPza6Pgc5u3uyan4TBfsSZg5P3k3kg501PI_aA
+
+###
+POST http://localhost:8089/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=user2&password=12345

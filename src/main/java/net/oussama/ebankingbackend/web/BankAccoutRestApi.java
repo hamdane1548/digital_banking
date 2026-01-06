@@ -20,6 +20,18 @@ public class BankAccoutRestApi {
     public BankAccountDto getBankAccountById(@PathVariable String id) throws BankAccountNotfoundExecption {
         return bankAccountServices.getBankAccount(id);
     }
+    @GetMapping("/bankaccount/count")
+    public int getBankAccountCount() throws BankAccountNotfoundExecption {
+        return bankAccountServices.countBankAccount();
+    }
+    @GetMapping("/operation/count")
+    public int getBankOperationsCount() throws BankAccountNotfoundExecption {
+        return bankAccountServices.accountOperations();
+    }
+    @GetMapping("/bankaccount/totaloperation")
+    public double getBankAccountTotalOperation() throws BankAccountNotfoundExecption {
+        return bankAccountServices.countamoutAccount();
+    }
     @GetMapping("/bankaccount")
     public List<BankAccountDto> getBankAccounts() throws BankAccountNotfoundExecption {
         return bankAccountServices.bankAccountslist();

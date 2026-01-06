@@ -18,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -79,7 +81,38 @@ public class BankAccountsServiceImpl implements BanKAccountServices{
         ).collect(Collectors.toList());
         return customerDtos;
     }
+    @Override
+    public int CountCustomers(){
+        return customersRepositroy.findAll().size();
+     }
+     @Override
+     public int countBankAccount(){
+        return bankAccountRepositroy.findAll().size();
+     }
+     @Override
+     public double countamoutAccount(){
+        List<AccountOperation> amountoperations=bankAccountOperationrepositro.findAll();
+        double suma_debit=amountoperations.stream()
+                .filter(op -> op.getType() == OperationType.DEBIT)
+               .mapToDouble(AccountOperation::getAmount)
+               .sum();
+        double sum_credit=amountoperations.stream()
+                .filter(op -> op.getType() == OperationType.CREDIT)
+                .mapToDouble(AccountOperation::getAmount)
+                .sum();
+         System.out.println(suma_debit);
+         System.out.println(sum_credit);
+         BigDecimal result = BigDecimal.valueOf(sum_credit)
+                 .subtract(BigDecimal.valueOf(suma_debit))
+                 .setScale(2, RoundingMode.HALF_UP);
 
+         return result.doubleValue();
+
+     }
+     @Override
+     public  int accountOperations(){
+          return bankAccountOperationrepositro.findAll().size();
+     }
     @Override
     public BankAccountDto getBankAccount(String Id) throws BankAccountNotfoundExecption {
         BankAccount bankAccount =bankAccountRepositroy.findById(Id).orElseThrow(()->new BankAccountNotfoundExecption("erreur leur de trouve le banke account"));
